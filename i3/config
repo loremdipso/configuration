@@ -1,0 +1,304 @@
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+#NOTES:
+# control = move workspace
+# Shift   = move window
+
+#_RESIZE
+#_Workspace_Names
+#_Scratchpad
+#_Volume
+#_Workspace_Moving
+
+set $mod Mod4
+
+
+exec --no-startup-id volti # volume
+exec --no-startup-id nm-applet
+exec --no-startup-id mate-volume-control-applet
+exec --no-startup-ip parcellite
+exec --no-startup-ip pa-applet
+exec nitrogen --restore
+exec dropboxTray.py
+exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1  # password stuff for software center
+
+exec ~/.screenlayout/normal.sh
+
+# doesn't work well, or at all
+#exec ~/.bin/script/floating_script.py
+
+#_Floating_Stuff
+for_window [class="I3-exit"] floating enable
+for_window [class="Nitrogen"] floating enable
+
+
+bindsym Control+Shift+Escape exec gnome-system-monitor
+
+
+
+
+#_Workspace_Names
+#set $1   "1: term"
+#set $2   "2: www"
+set $1   "1"
+set $2   "2"
+set $3   "3"
+set $4   "4"
+set $5   "5"
+set $6   "6"
+set $7   "7"
+set $8   "8"
+set $9   "9"
+set $10 "10"
+
+
+#button right close.png kill
+
+
+#assign [class="Terminator"] $1
+
+#assign [class="Firefox"] $2
+#assign [class="Qbittorrent"] $2
+#assign [class="JDownloader"] $2
+
+
+for_window [class="I3-exit"] floating enable
+
+
+# kill on middle-mouse click
+#bindsym --release --whole-window $mod+button1 kill
+#bindsym --release --whole-window button2 floating toggle
+#bindsym $mod+button2 kill
+
+# right button toggles floating
+#bindsym button3 floating toggle
+
+
+bindsym $mod+Insert exec nautilus
+
+
+bindsym $mod+Control+Right move workspace to output right
+bindsym $mod+Control+Left move workspace to output left
+
+#bindsym $mod+l exec export XDG_SEAT_PATH="..." dm-tool lock
+#bindsym $mod+l exec gnome-screensaver-command -l
+bindsym $mod+l exec i3lock -d -I 5
+#bindsym $mod+l exec gdmflexiserver
+#bindsym $mod+Shift+l exec ~/.lock_and_suspend.sh
+bindsym $mod+Shift+l exec i3lock -d -I 5 && systemctl suspend
+
+
+#_Scratchpad
+bindsym $mod+minus move scratchpad
+bindsym $mod+equal scratchpad show
+#bindsym $mod+KP_Subtract move scratchpad
+#bindsym $mod+KP_Add scratchpad show
+
+
+
+#_Volume
+#bindsym Shift+KP_8 exec amixer -q set Master 5dB+
+#bindsym Shift+KP_2 exec amixer -q set Master 5dB-
+bindsym Shift+Up exec pactl set-sink-volume 1 +5%
+bindsym Shift+Down exec pactl set-sink-volume 1 -5%
+bindsym $mod+m exec exec pactl set-sink-mute 1 toggle
+
+
+
+#_Workspace_Moving
+# dynamic tagging feature
+bindsym $mod+t exec ~/.i3/get_workspace_options.py | dmenu -b | ~/.i3/go_to_workspace.py
+bindsym $mod+Shift+t exec ~/.i3/get_workspace_options.py | dmenu -b | ~/.i3/move_to_workspace.py
+#bindsym $mod+Control+t exec ~/.i3/get_workspace_options.py | dmenu -b | ~/.i3/rename_workspace.py # not yet made
+
+# next/previous workspace stuff
+bindsym $mod+p exec ~/.i3/workspace_utils.py move_me beginning
+bindsym $mod+Shift+p exec ~/.i3/workspace_utils.py move_window beginning
+bindsym $mod+Control+p exec ~/.i3/workspace_utils.py move_workspace beginning
+
+bindsym $mod+n exec ~/.i3/workspace_utils.py move_me end
+bindsym $mod+Shift+n exec ~/.i3/workspace_utils.py move_window end
+bindsym $mod+Control+n exec ~/.i3/workspace_utils.py move_workspace end
+
+# move to next/previous spot on current monitor
+bindsym $mod+Page_Up exec ~/.i3/workspace_utils.py move_me previous_on_monitor
+bindsym $mod+Page_Down exec ~/.i3/workspace_utils.py move_me next_on_monitor
+
+# move workspace to next/previous spot on current monitor
+bindsym $mod+Control+Page_Up exec ~/.i3/workspace_utils.py move_workspace previous_on_monitor
+bindsym $mod+Control+Page_Down exec ~/.i3/workspace_utils.py move_workspace next_on_monitor
+
+# move window to next/previous spot on current monitor and follow
+bindsym $mod+Shift+Page_Up exec ~/.i3/workspace_utils.py move_window previous_on_monitor
+bindsym $mod+Shift+Page_Down exec ~/.i3/workspace_utils.py move_window next_on_monitor
+
+
+# mod-shift-s move window/workspace to next monitor (switch)
+bindsym $mod+Shift+s exec ~/.i3/workspace_utils.py move_window_to_next_monitor
+# not really, but works well enough for two monitors
+bindsym $mod+Control+s move workspace to output left
+
+
+
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below. ISO 10646 = Unicode
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+# The font above is very space-efficient, that is, it looks good, sharp and
+# clear in small sizes. However, if you need a lot of unicode glyphs or
+# right-to-left text rendering, you should instead use pango for rendering and
+# chose a FreeType font, such as:
+# font pango:DejaVu Sans Mono 10
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+q kill
+bindsym Mod1+w kill
+
+# start dmenu (a program launcher)
+#bindsym ctrl+space exec dmenu_run
+# There also is the (new) i3-dmenu-desktop which only displays applications
+# shipping a .desktop file. It is a wrapper around dmenu, so you need that
+# installed.
+bindsym ctrl+space exec --no-startup-id i3-dmenu-desktop
+
+# TODO: raise running program
+#bindsym Mod1+space exec --no-startup-id ~/.i3/dmenu_raise.sh
+bindsym Mod1+Tab exec --no-startup-id ~/.i3/dmenu_raise.sh
+
+# change focus
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+#bindsym $mod+Shift+j move left
+#bindsym $mod+Shift+k move down
+#bindsym $mod+Shift+l move up
+#bindsym $mod+Shift+semicolon move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+#bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+space exec ~/.i3/workspace_utils.py float_with_storage
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# next workspace
+#bindsym $mod+KP_Add workspace next
+#bindsym $mod+KP_Subtract workspace prev
+#bindsym $mod+shift+KP_Add move container to workspace next
+#bindsym $mod+shift+KP_Subtract move container to workspace prev
+
+# switch to workspace
+bindsym $mod+KP_1 workspace $1
+bindsym $mod+KP_2 workspace $2
+bindsym $mod+KP_3 workspace $3
+bindsym $mod+KP_4 workspace $4
+bindsym $mod+KP_5 workspace $5
+bindsym $mod+KP_6 workspace $6
+bindsym $mod+KP_7 workspace $7
+bindsym $mod+KP_8 workspace $8
+bindsym $mod+KP_9 workspace $9
+bindsym $mod+KP_0 workspace $10
+
+
+# move focused container to workspace
+bindsym $mod+Shift+KP_1 move container to workspace $1  ; workspace $1
+bindsym $mod+Shift+KP_2 move container to workspace $2  ; workspace $2
+bindsym $mod+Shift+KP_3 move container to workspace $3  ; workspace $3
+bindsym $mod+Shift+KP_4 move container to workspace $4  ; workspace $4
+bindsym $mod+Shift+KP_5 move container to workspace $5  ; workspace $5
+bindsym $mod+Shift+KP_6 move container to workspace $6  ; workspace $6
+bindsym $mod+Shift+KP_7 move container to workspace $7  ; workspace $7
+bindsym $mod+Shift+KP_8 move container to workspace $8  ; workspace $8
+bindsym $mod+Shift+KP_9 move container to workspace $9  ; workspace $9
+bindsym $mod+Shift+KP_0 move container to workspace $10 ; workspace $10
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "~/.i3/I3-exit"
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+
+
+#_RESIZE
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        #status_command python ~/.i3/i3status_conf.py
+        status_command i3status -c ~/.i3/i3status.conf
+        #status_command ~/.i3/i3status_wrapper.sh
+		#status_command    python3 ~/.i3/i3status_conf.py
+		#status_command source py3.4env/bin/activate -p /usr/bin/python3.4 python3 ~/.i3/i3status_conf.py
+		#status_command    ~/.i3/i3status_conf_wrapper.sh
+		workspace_buttons yes
+		#position          top
+}

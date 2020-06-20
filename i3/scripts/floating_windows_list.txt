@@ -1,0 +1,8 @@
+Nitrogen
+Arandr
+Nemo
+Gnome-system-monitor
+Eclipse
+Firefox
+Kodi
+Gimp-2.8
