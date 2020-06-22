@@ -1,0 +1,503 @@
+" HIGHLIGHT 80th character red, or all characters after 80th
+"
+
+syntax enable
+filetype on		" detects the filetype
+set hlsearch	" highlight search so far
+set incsearch	" highlight as you type you search phrase
+set autoindent	" hur-de-durr
+set ic			" ignores case
+set nu			" number lines
+set ruler
+
+" quit-buffer command
+:command QB bd
+
+
+" remap control+c/v
+vnoremap <C-C> "+y
+"vnoremap <C-V> "+p
+map <C-V> "+gP
+nmap <C-V> <C-R>+
+cmap <C-V> <C-R>+
+
+
+
+let mapleader=","
+
+
+map ,g :w\|:!clear && if [ -e ./script.sh ] ; then ./script.sh; else './%'; fi
+
+
+map gm :call cursor(0, virtcol('$')/2)<CR>
+
+"indents all lines in file. Kills and marks in P
+nmap f= mPgg=G'P
+
+" Vim split movement
+nmap <C-Left> <C-W>h
+nmap <C-Right> <C-W>l
+nmap <C-Down> <C-W>j
+nmap <C-Up> <C-W>k
+
+" DAS stuff
+set shell=bash " not sure what this does
+set switchbuf=useopen " not sure what this does
+set showtabline=2
+set winwidth=79
+
+
+
+
+
+"Defines a command RandomLine
+command! RandomLine execute 'normal! '.(system('sh -c "echo -n $RANDOM"') % line('$')).'G'
+
+
+"Command-T options
+nnoremap ,t :CommandT
+"cnoremap %% <C-R>=expand('%:h').'/'<cr>	" should turn a %% in the commandline
+											" be translated into the current directory.
+
+set ttimeoutlen=50
+if &term =~ "xterm" || &term =~ "screen"
+  let g:CommandTCancelMap     = ['<ESC>', '<C-c>']
+  let g:CommandTSelectNextMap = ['<C-n>', '<C-j>', '<ESC>OB']
+  let g:CommandTSelectPrevMap = ['<C-p>', '<C-k>', '<ESC>OA']
+endif
+
+
+
+" enables to search in all open buffers with :Search <pattern>
+command! -nargs=1 Search call setqflist([]) | silent bufdo grepadd! <args> %
+"nnoremap <F6>  :cprev<cr>zvzz
+"nnoremap <F7> :cnext<cr>zvzz
+
+
+
+let g:syntastic_check_on_open=1
+"let g:syntastic_auto_jump=1
+let g:syntastic_mode_map = { 'mode': 'active',
+	\ 'active_filetypes': [],
+	\ 'passive_filetypes': ['html'] }
+
+
+" BEGIN BUNDLE CONFIGURATION
+" FILETYPE RECOGNITION IS REQUIRED TO BE OFF
+
+set nocompatible
+filetype off
+
+"set rtp+=~/.vim/bundle/Vundle.vim
+"call vundle#begin()
+"
+"Bundle 'gmarik/vundle'
+"Bundle 'scrooloose/nerdcommenter'
+"Bundle 'https://github.com/nanotech/jellybeans.vim'
+"Bundle 'https://github.com/pseewald/vim-anyfold'
+"call vundle#end()
+
+
+
+
+
+" what a terrible name
+call plug#begin('~/.vim/plugged')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'georgewitteman/vim-fish'
+call plug#end()
+
+let g:coc_global_extensions = ['coc-solargraph'] " for ruby
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+
+
+
+filetype plugin indent on
+
+" for vim-anyfold
+let anyfold_activate=1
+set foldlevel=0
+
+" END BUNDLE CONFIGURATION
+
+
+
+
+colo wombat
+"colo jellybeans
+
+
+" Tabularize shortcut
+cnoremap Tab Tabularize
+
+
+
+" Color indent guides
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=238
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=236
+
+
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+
+
+function! DeleteFile(...)
+	if(exists('a:1'))
+		let theFile=a:1
+	elseif ( &ft == 'help' )
+		echohl Error
+		echo "Cannot delete a help buffer!"
+		echohl None
+		return -1
+	else
+		let theFile=expand('%:p')
+	endif
+	let delStatus=delete(theFile)
+	if(delStatus == 0)
+		echo "Deleted " . theFile
+		bdelete!
+	else
+		echohl WarningMsg
+		echo "Failed to delete " . theFile
+		echohl None
+	endif
+	return delStatus
+endfunction
+
+"delete the current file
+com! Delete call DeleteFile()
+"delete the file and quit the buffer (quits vim if this was the last file)
+" non github repos
+"Bundle 'http://github.com/msanders/snipmate.vim'
+
+"can use capital s in %S to replace while keeping source capitalization
+"Bundle 'git://github.com/tpope/vim-abolish.git'
+
+"go plugins
+"Bundle 'fatih/vim-go'
+
+"colo solarized
+"colo railscasts
+"colo wombat
+"colo Wombat
+"colo gruvbox
+
+syntax enable
+filetype plugin indent on
+
+" END BUNDLE CONFIGURATION
+
+
+" Add c++11 to syntastic
+let g:syntastic_cpp_compiler_options = ' -std=c++0x'
+
+
+
+" Tabularize shortcut
+cnoremap Tab Tabularize
+
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+
+
+
+function! DeleteFile(...)
+	if(exists('a:1'))
+		let theFile=a:1
+	elseif ( &ft == 'help' )
+		echohl Error
+		echo "Cannot delete a help buffer!"
+		echohl None
+		return -1
+	else
+		let theFile=expand('%:p')
+	endif
+	let delStatus=delete(theFile)
+	if(delStatus == 0)
+		echo "Deleted " . theFile
+	else
+		echohl WarningMsg
+		echo "Failed to delete " . theFile
+		echohl None
+	endif
+	return delStatus
+endfunction
+
+"delete the current file
+com! Delete call DeleteFile()
+"delete the file and quit the buffer (quits vim if this was the last file)
+"com! RM call DeleteFile() <Bar> q!
+
+
+
+
+
+" Let's you open a new buffer without saving the old one.
+set hidden
+
+" For use with matchitt
+filetype detect
+filetype plugin on
+
+set ofu=syntaxcomplete#Complete
+
+
+
+
+nmap <C-F5> :bro ol<Enter>
+" Opens NERDTree
+nmap <F5> :NERDTreeToggle<Enter>
+
+let NERDTreeMouseMode = 3
+let g:NERDTreeWinSize = 30
+
+
+autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+function! s:CloseIfOnlyNerdTreeLeft()
+  if exists("t:NERDTreeBufName")
+    if bufwinnr(t:NERDTreeBufName) != -1
+      if winnr("$") == 1
+        q
+      endif
+    endif
+  endif
+endfunction
+
+" MiniBufExplorer config
+"let g:miniBufExplUseSingleClick = 1
+let g:miniBufExplTabWrap = 1
+let g:miniBufExplMaxSize = 3
+
+" Use C-J/K to move the current line up/down
+nnoremap <C-j> :m+<CR>==
+nnoremap <C-k> :m-2<CR>==
+inoremap <C-j> <Esc>:m+<CR>==gi
+inoremap <C-k> <Esc>:m-2<CR>==gi
+vnoremap <C-j> :m'>+<CR>gv=gv
+vnoremap <C-k> :m-2<CR>gv=gv
+
+
+" Constants
+let tabsize = 4
+set tabstop=4
+set shiftwidth=4
+set softtabstop=-1
+set noexpandtab
+
+" Cool, but interferes with ; redoing same movement
+" So, let's try '''
+nnoremap ' ;
+nnoremap ; :
+
+" Improved syntax highlighting
+syntax on
+au bufread,InsertEnter * syn keyword javaType String
+au bufread,InsertEnter * syn keyword cType string map multimap vector set multiset istream ostream free malloc uint ifstream ofstream fstream
+
+
+" Sets filetype indent on for filetypes other than C
+" also, makes sure vim opens at the same place
+"if has("autocmd")
+	"filetype indent on
+	"au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"endif
+
+" Sets F1 and F2 to go the previous and next buffers, respectively
+map <F1> <Esc>:bp<CR>| imap <F1> <Esc>:bp<CR>
+map <F2> <Esc>:bn<CR>| imap <F2> <Esc>:bn<CR>
+
+
+
+" Toggles the number keys default output
+nnoremap <C-b> :call Numbas()<CR>
+inoremap <C-b> <Esc>:call Numbas()<CR>a
+
+
+" pgdn moves down half a screen
+nmap <PageDown> <C-D>
+
+" pgup moves up half a screen
+nmap <PageUp> <C-U>
+
+
+" Space makes newline below
+nmap <Space> o<Esc>
+
+" Control o makes newline above
+nmap <C-o> O<Esc>
+
+
+" Puts everything to right of cursor on newline
+nmap <Enter> i<Enter><Esc>
+
+" copies file to clipboard
+" pastes from clipboard
+:nmap <F3> "+y
+:nmap <F4> "+p
+:nmap <C-c> "+y
+:vmap <C-c> "+y
+:nmap <C-p> "+p
+
+
+" Highlights lines over 79 characters, single '='s, and traliing whitespace
+highlight TooLong ctermbg=red ctermfg=white guibg=#592929
+highlight SingleQ ctermbg=red ctermfg=white guibg=#592929
+highlight WhiteSpace ctermbg=white ctermfg=black
+
+match SingleQ /\(while (.* = .*)\)\|\(if (.* = .*)\)/
+"match TooLong /\%80v/   " only match 80 char, not 80+
+"match TooLong /\%80v.\+/
+"match WhiteSpace /\s\+$/
+
+function s:FixTabs()
+  set noexpandtab
+  execute "set tabstop=".g:tabsize
+  execute "set softtabstop=".g:tabsize
+  execute "set shiftwidth=".g:tabsize
+endfunction
+
+
+" Do stuff to files at different commands
+"au BufWinLeave ?* mkview 1
+"au BufWinEnter ?* silent loadview 1
+autocmd BufWinEnter * 2match WhiteSpace /\s\+$/
+autocmd InsertEnter * 2match WhiteSpace /\s\+\%#\@<!$/
+autocmd InsertLeave * 2match WhiteSpace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+"autocmd BufWritePre * :%s/\s\+$//e "Removes whitespace on save
+autocmd BufWrite *.py :retab " Make indentation in python files monogamous according to current settings
+autocmd! BufNewFile *.java silent! 0r ~/.vim/skel/tmpl.%:e | silent exe "%s/CLASSNAME/".expand('%:t:r').'/g' | let Comment="\\/\\/"
+autocmd! BufNewFile *[^java] silent! 0r ~/.vim/skel/tmpl.%:e
+
+au BufNewFile,BufRead *.rb call s:FixTabs()
+
+
+" TODO: one of the below methods are redundant for saving file position
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif " goes to the last edited line in a file
+
+au BufWinLeave * mkview
+"au BufWinEnter * silent loadview
+
+
+
+"doesn't work with youcompleteme
+"set cpoptions=qaAFc		" When joining lines, leave the cursor between joined lines
+set autochdir 			" always switch to the current file directory
+"autocmd BufEnter * silent! lcd %:p:h	"alternative to autochdir
+set directory=~/.vim/tmp " directory to place swap files in
+set mouse=a 			" use mouse everywhere
+set noerrorbells 		" don't make noise
+set wildmenu 			" turn on command line completion wild style
+set novisualbell 		" don't blink
+set report=0 			" tell us when anything is changed via :...
+set showcmd 			" show the command being typed
+set smartcase 			" if there are caps, go case-sensitive
+set foldenable 			" Turn on folding
+set foldmethod=syntax   " Fold based on syntax
+set foldlevel=100 		" Don't autofold anything
+set foldopen=block,hor,mark,percent,quickfix,tag " what movements ???
+
+
+
+" Comment/Uncommenting
+nnoremap <expr> ,c <SID>ExecuteCountOrMotion(0)
+nnoremap <expr> ,u <SID>ExecuteCountOrMotion(1)
+
+
+
+" Set options if using spaces for indents (default).
+
+"function SpacesComment(comment)
+"  set expandtab
+"  execute "set tabstop=".g:short_tabsize
+"  execute "set softtabstop=".g:short_tabsize
+"  execute "set shiftwidth=".g:short_tabsize
+"
+"  let g:Comment=a:comment
+"endfunction
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+" Set a nicer foldtext function
+set foldtext=MyFoldText()
+function! MyFoldText()
+  let line = getline(v:foldstart)
+  if match( line, '^[ \t]*\(\/\*\|\/\/\)[*/\\]*[ \t]*$' ) == 0
+    let initial = substitute( line, '^\([ \t]\)*\(\/\*\|\/\/\)\(.*\)', '\1\2', '' )
+    let linenum = v:foldstart + 1
+    while linenum < v:foldend
+      let line = getline( linenum )
+      let comment_content = substitute( line, '^\([ \t\/\*]*\)\(.*\)$', '\2', 'g' )
+      if comment_content != ''
+        break
+      endif
+      let linenum = linenum + 1
+    endwhile
+    let sub = initial . ' ' . comment_content
+  else
+    let sub = line
+    let startbrace = substitute( line, '^.*{[ \t]*$', '{', 'g')
+    if startbrace == '{'
+      let line = getline(v:foldend)
+      let endbrace = substitute( line, '^[ \t]*}\(.*\)$', '}', 'g')
+      if endbrace == '}'
+        let sub = sub.substitute( line, '^[ \t]*}\(.*\)$', '...}\1', 'g')
+      endif
+    endif
+  endif
+  let n = v:foldend - v:foldstart + 1
+  let info = " " . n . " lines"
+  let sub = sub . "                                                                                                                  "
+  let num_w = getwinvar( 0, '&number' ) * getwinvar( 0, '&numberwidth' )
+  let fold_w = getwinvar( 0, '&foldcolumn' )
+  let sub = strpart( sub, 0, winwidth(0) - strlen( info ) - num_w - fold_w - 1 )
+  return sub . info
+endfunction
