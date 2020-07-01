@@ -53,12 +53,12 @@ class Manager
         @flags[:dry_run] = true
     end
 
-    @@options.push(Arg.new(:skip, "Skip if the local file is newer", "--skip"))
+    @@options.push(Arg.new(:skip, "Skip if the target file is newer", "--skip"))
     def skip()
         @flags[:skip] = true
     end
 
-    @@options.push(Arg.new(:force, "Overrite local file even if they're newer", "--force"))
+    @@options.push(Arg.new(:force, "Overrite target file even if they're newer", "--force"))
     def force()
         @flags[:force] = true
     end
@@ -79,8 +79,8 @@ class Manager
     @@actions.push(Arg.new(:pull, "Pull config files into here"))
 	def pull()
         Dir.chdir("./dotfiles") do
-            _, files = get_files()
-            # TODO
+            _, files = Manager.get_files()
+            files.each { |f| safe_move_file(Manager.localize(f), f) }
         end
 	end
 
@@ -88,9 +88,8 @@ class Manager
 	def push()
         Dir.chdir("./dotfiles") do
             dirs, files = Manager.get_files()
-
-            dirs.each { |f| ensure_directory(f) }
-            files.each { |f| ensure_file(f) }
+            dirs.each { |d| ensure_local_directory(d) }
+            files.each { |f| safe_move_file(f, Manager.localize(f)) }
         end
 	end
 
@@ -124,7 +123,7 @@ class Manager
 		name.sub(/^\.\//, "#{File.expand_path("~")}/.")
 	end
 
-	def ensure_directory(dirname)
+	def ensure_local_directory(dirname)
 		local = Manager.localize(dirname)
 		puts "\nMaking #{local}..."
 
@@ -141,37 +140,35 @@ class Manager
         end
 	end
 
-    def Manager.get_files()
+    def self.get_files()
         # NOTE: assumes we're in dotfiles
-        Manager.filter_paths(Dir['./**/*'])
+        self.filter_paths(Dir['./**/*'])
     end
 
-    def ensure_file(filename)
+    def safe_move_file(source, target)
         puts "\n\n\n"
-        local = Manager.localize(filename)
-        if File.exists?(local)
-            # TODO: check mtimes
-            if File.mtime(local) > File.mtime(filename)
+        if File.exists?(target)
+            if File.mtime(target).to_i - File.mtime(source).to_i > 10 # 10ms
                 if @flags[:force]
                     # do nothing, always process file
                 elsif @flags[:skip]
-                    puts "Whoa! Local file (#{local}) is newer. Skipping."
+                    puts "Whoa! target file (#{target}) is newer. Skipping."
                 else
-                    puts "Local file (#{local}) is newer. Copy anyway? (y/n)> ."
+                    puts "target file (#{target}) is newer. Copy anyway? (y/n)> ."
                     answer = STDIN.gets().chomp.downcase
                     return if answer[0] != 'y'
                 end
             end
 
-            print "Overriding #{local} with #{filename}..."
+            print "Overriding #{target} with #{source}..."
         else
-            print "Copying #{filename} to #{local}..."
+            print "Copying #{source} to #{target}..."
         end
 
         if @flags[:dry_run]
             puts "<not really>"
         else
-            FileUtils.cp(filename, local)
+            FileUtils.cp(source, target, preserve: true)
             puts "done"
         end
 	end

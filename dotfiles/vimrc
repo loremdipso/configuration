@@ -100,8 +100,6 @@ filetype off
 
 
 
-
-
 " what a terrible name
 call plug#begin('~/.vim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
