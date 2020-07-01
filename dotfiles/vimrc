@@ -1,6 +1,7 @@
 " HIGHLIGHT 80th character red, or all characters after 80th
 "
 
+
 syntax enable
 filetype on		" detects the filetype
 set hlsearch	" highlight search so far

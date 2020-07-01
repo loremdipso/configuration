@@ -29,7 +29,9 @@ class Manager
 
     def initialize(args)
         @flags = {
-            :dry_run => false
+            :dry_run => false,
+            :force => false,
+            :skip => false
         }
 
 		# operate on options
@@ -43,31 +45,22 @@ class Manager
             action = @@actions.find{|opt| opt.matches(arg) }
             method(action.symbol).call() if action != nil
         end
-
-		# 	case arg
-		# 	when "--help"
-		# 		return help()
-		# 	when "--dry"
-		# 	when "pull"
-		# 		pull(files)
-		# 	end
-		# end
-
-
-		# args.each do |arg|
-		# 	case arg
-		# 	when "pull"
-		# 		pull(files)
-		# 	when "push"
-		# 		push(dirs, files)
-		# 	end
-		# end
 	end
 
 
     @@options.push(Arg.new(:dry_run, "Dry run", "--dryrun", "--dry"))
     def dry_run()
         @flags[:dry_run] = true
+    end
+
+    @@options.push(Arg.new(:skip, "Skip if the local file is newer", "--skip"))
+    def skip()
+        @flags[:skip] = true
+    end
+
+    @@options.push(Arg.new(:force, "Overrite local file even if they're newer", "--force"))
+    def force()
+        @flags[:force] = true
     end
 
     @@options.push(Arg.new(:help, "Get help", "--help"))
@@ -105,19 +98,16 @@ class Manager
 	def self.filter_paths(paths)
 		dirs = []
 		files = []
-		seen_dirs = []
+		#seen_dirs = []
 
 		paths.sort.each do |f|
-			if seen_dirs.all?{|s| f.index(s) == nil}
-				if File.directory?(f)
-					if has_files(f)
-						seen_dirs.push(f)
-						dirs.push(f)
-					end
-				else
-					files.push(f)
-				end
-			end
+            if File.directory?(f)
+                if has_files(f)
+                    dirs.push(f)
+                end
+            else
+                files.push(f)
+            end
 		end
 
 		[dirs, files]
@@ -138,16 +128,16 @@ class Manager
 		local = Manager.localize(dirname)
 		puts "\nMaking #{local}..."
 
-		if Dir.exists?(local)
-			puts "\tRemoving #{local}..."
-			`rm -rf "#{local}"`
-		end
+		#if Dir.exists?(local)
+			#puts "\tRemoving #{local}..."
+			#`rm -rf "#{local}"`
+		#end
 
-        puts "\tRecursively copying #{dirname} over to #{local}..."
+        puts "\Ensuring this path exists: #{local}..."
         if @flags[:dry_run]
             puts "\t\t<not really>"
         else
-            FileUtils.cp_r(dirname, local)
+            FileUtils.mkdir_p(local)
         end
 	end
 
@@ -156,13 +146,33 @@ class Manager
         Manager.filter_paths(Dir['./**/*'])
     end
 
-	def ensure_file(filename)
-		local = Manager.localize(filename)
-        puts "Overriding #{local} with #{filename}..."
+    def ensure_file(filename)
+        puts "\n\n\n"
+        local = Manager.localize(filename)
+        if File.exists?(local)
+            # TODO: check mtimes
+            if File.mtime(local) > File.mtime(filename)
+                if @flags[:force]
+                    # do nothing, always process file
+                elsif @flags[:skip]
+                    puts "Whoa! Local file (#{local}) is newer. Skipping."
+                else
+                    puts "Local file (#{local}) is newer. Copy anyway? (y/n)> ."
+                    answer = STDIN.gets().chomp.downcase
+                    return if answer[0] != 'y'
+                end
+            end
+
+            print "Overriding #{local} with #{filename}..."
+        else
+            print "Copying #{filename} to #{local}..."
+        end
+
         if @flags[:dry_run]
             puts "<not really>"
         else
             FileUtils.cp(filename, local)
+            puts "done"
         end
 	end
 end
