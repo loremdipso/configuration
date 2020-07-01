@@ -20,6 +20,14 @@ class Arg
     def to_s
         return @description
     end
+
+    def keys
+        return ([@symbol.to_s] + @synonyms).join(" | ")
+    end
+
+    def description
+        return @description
+    end
 end
 
 
@@ -31,6 +39,7 @@ class Manager
         @flags = {
             :dry_run => false,
             :force => false,
+            :verbose => false,
             :skip => false
         }
 
@@ -53,6 +62,11 @@ class Manager
         @flags[:dry_run] = true
     end
 
+    @@options.push(Arg.new(:verbose, "Talkative", "--verbose"))
+    def verbose()
+        @flags[:verbose] = true
+    end
+
     @@options.push(Arg.new(:skip, "Skip if the target file is newer", "--skip"))
     def skip()
         @flags[:skip] = true
@@ -67,13 +81,18 @@ class Manager
     def help()
         puts "Options:"
         @@options.each do |opt|
-            puts "\t#{opt}"
+            puts "\t#{opt.keys}:"
+            puts "\t\t#{opt.description}"
+            puts ""
         end
 
         puts "Actions:"
         @@actions.each do |act|
-            puts "\t#{act}"
+            puts "\t#{act.keys}:"
+            puts "\t\t#{act.description}"
+            puts ""
         end
+        exit(0)
 	end
 
     @@actions.push(Arg.new(:pull, "Pull config files into here"))
@@ -97,7 +116,6 @@ class Manager
 	def self.filter_paths(paths)
 		dirs = []
 		files = []
-		#seen_dirs = []
 
 		paths.sort.each do |f|
             if File.directory?(f)
@@ -125,12 +143,10 @@ class Manager
 
 	def ensure_local_directory(dirname)
 		local = Manager.localize(dirname)
-		puts "\nMaking #{local}..."
 
-		#if Dir.exists?(local)
-			#puts "\tRemoving #{local}..."
-			#`rm -rf "#{local}"`
-		#end
+        if File.exists?(local)
+            return
+        end
 
         puts "\Ensuring this path exists: #{local}..."
         if @flags[:dry_run]
@@ -146,23 +162,25 @@ class Manager
     end
 
     def safe_move_file(source, target)
-        puts "\n\n\n"
         if File.exists?(target)
-            if File.mtime(target).to_i - File.mtime(source).to_i > 10 # 10ms
+            if File.read(source) == File.read(target)
+                puts "Same. Skipping #{target}" if @flags[:verbose]
+                return
+            elsif File.mtime(target).to_i - File.mtime(source).to_i > 10 # 10ms
                 if @flags[:force]
                     # do nothing, always process file
                 elsif @flags[:skip]
-                    puts "Whoa! target file (#{target}) is newer. Skipping."
+                    print "Whoa! target file (#{target}) is newer. Skipping."
                 else
-                    puts "target file (#{target}) is newer. Copy anyway? (y/n)> ."
+                    print "target file (#{target}) is newer. Copy anyway (y/n)?: "
                     answer = STDIN.gets().chomp.downcase
                     return if answer[0] != 'y'
                 end
             end
 
-            print "Overriding #{target} with #{source}..."
+            print "Overriding #{target}: "
         else
-            print "Copying #{source} to #{target}..."
+            print "Copying into #{target}: "
         end
 
         if @flags[:dry_run]
