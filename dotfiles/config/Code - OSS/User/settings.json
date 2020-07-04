@@ -1,0 +1,32 @@
+{
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                " "
+            ],
+            "after": [
+                "o",
+                "<Esc>"
+            ]
+        },
+        {
+            "before": [
+                ";"
+            ],
+            "after": [
+                ":"
+            ]
+        },
+    ],
+    "competitive-programming-helper.defaultLanguage": "C++",
+    "explorer.confirmDelete": false,
+    "competitive-programming-helper.firstTime": false,
+	"competitive-programming-helper.saveLocation": "/home/madams/Projects/Topcoder/.garbage",
+	"editor.detectIndentation": false,
+	"go.useLanguageServer": true,
+	"editor.autoClosingBrackets": "never",
+	"explorer.confirmDragAndDrop": false,
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"rust-analyzer.inlayHints.enable": false,
+	"window.zoomLevel": 0
+}
