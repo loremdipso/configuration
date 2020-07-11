@@ -28,5 +28,14 @@
 	"explorer.confirmDragAndDrop": false,
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"rust-analyzer.inlayHints.enable": false,
-	"window.zoomLevel": 0
+    "window.zoomLevel": 0,
+	"editor.insertSpaces": false,
+	"editor.formatOnSave": true,
+	"cSpell.userWords": [
+		"checklogin",
+		"hahaha",
+		"signup"
+	],
+	"compile-hero.scss-output-directory": ".",
+	"html.format.indentInnerHtml": true
 }
