@@ -1,18 +1,18 @@
 // Place your key bindings in this file to override the defaultsauto[]
 [
-    {
-        "key": "ctrl+\\",
-        "command": "-workbench.action.splitEditor"
-    },
-    {
-        "key": "ctrl+a",
-        "command": "-extension.vim_ctrl+a",
-        "when": "editorTextFocus && vim.active && vim.use<C-a> && !inDebugRepl"
-    },
-    {
-        "key": "ctrl+c",
-        "command": "-extension.vim_ctrl+c",
-        "when": "editorTextFocus && vim.active && vim.overrideCtrlC && vim.use<C-c> && !inDebugRepl"
+	{
+		"key": "ctrl+\\",
+		"command": "-workbench.action.splitEditor"
+	},
+	{
+		"key": "ctrl+a",
+		"command": "-extension.vim_ctrl+a",
+		"when": "editorTextFocus && vim.active && vim.use<C-a> && !inDebugRepl"
+	},
+	{
+		"key": "ctrl+c",
+		"command": "-extension.vim_ctrl+c",
+		"when": "editorTextFocus && vim.active && vim.overrideCtrlC && vim.use<C-c> && !inDebugRepl"
 	},
 	{
 		"key": "ctrl+v",
@@ -46,5 +46,15 @@
 		"key": "ctrl+y",
 		"command": "-extension.vim_ctrl+y",
 		"when": "editorTextFocus && vim.active && vim.use<C-y> && !inDebugRepl"
+	},
+	{
+		"key": "ctrl+x",
+		"command": "-extension.vim_ctrl+x",
+		"when": "editorTextFocus && vim.active && vim.use<C-x> && !inDebugRepl"
+	},
+	{
+		"key": "ctrl+f",
+		"command": "-extension.vim_ctrl+f",
+		"when": "editorTextFocus && vim.active && vim.use<C-f> && !inDebugRepl && vim.mode != 'Insert'"
 	}
 ]

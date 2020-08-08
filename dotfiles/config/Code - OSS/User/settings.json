@@ -1,26 +1,17 @@
 {
-    "vim.normalModeKeyBindings": [
-        {
-            "before": [
-                " "
-            ],
-            "after": [
-                "o",
-                "<Esc>"
-            ]
-        },
-        {
-            "before": [
-                ";"
-            ],
-            "after": [
-                ":"
-            ]
-        },
-    ],
-    "competitive-programming-helper.defaultLanguage": "C++",
-    "explorer.confirmDelete": false,
-    "competitive-programming-helper.firstTime": false,
+	"vim.normalModeKeyBindings": [
+		{
+			"before": [" "],
+			"after": ["o", "<Esc>"]
+		},
+		{
+			"before": [";"],
+			"after": [":"]
+		}
+	],
+	"competitive-programming-helper.defaultLanguage": "C++",
+	"explorer.confirmDelete": false,
+	"competitive-programming-helper.firstTime": false,
 	"competitive-programming-helper.saveLocation": "/home/madams/Projects/Topcoder/.garbage",
 	"editor.detectIndentation": false,
 	"go.useLanguageServer": true,
@@ -28,14 +19,56 @@
 	"explorer.confirmDragAndDrop": false,
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"rust-analyzer.inlayHints.enable": false,
-    "window.zoomLevel": 0,
+	"window.zoomLevel": 1,
 	"editor.insertSpaces": false,
-	"editor.formatOnSave": true,
 	"cSpell.userWords": [
+		"Architected",
+		"Cookeville",
+		"Skunkworks",
+		"Telehealth",
 		"checklogin",
 		"hahaha",
+		"loremdipso",
 		"signup"
 	],
 	"compile-hero.scss-output-directory": ".",
-	"html.format.indentInnerHtml": true
+	"html.format.indentInnerHtml": true,
+
+	"prettier.useTabs": true,
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"files.exclude": {
+		"**/node_modules": true
+	},
+	"vetur.format.defaultFormatterOptions": {
+		"prettier": {
+			"singleQuote": true,
+			"semi": false
+		}
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "vscode.typescript-language-features"
+	},
+	"editor.formatOnSave": true,
+	"spellright.language": [
+		"English"
+	],
+	"spellright.documentTypes": [
+		"markdown",
+		"latex",
+		"plaintext"
+	],
+	"editor.minimap.enabled": false,
+	"workbench.activityBar.visible": true,
+	"html.autoClosingTags": false,
+	"cSpell.enableFiletypes": [
+		"!css",
+		"!rust",
+		"!scss"
+	],
+	"editor.wordWrap": "on"
 }
