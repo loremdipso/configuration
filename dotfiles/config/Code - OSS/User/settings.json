@@ -26,9 +26,12 @@
 		"Cookeville",
 		"Skunkworks",
 		"Telehealth",
+		"actix",
 		"checklogin",
 		"hahaha",
 		"loremdipso",
+		"postgres",
+		"scrollable",
 		"signup"
 	],
 	"compile-hero.scss-output-directory": ".",
@@ -68,7 +71,8 @@
 	"cSpell.enableFiletypes": [
 		"!css",
 		"!rust",
-		"!scss"
+		"!scss",
+		"!typescriptreact"
 	],
-	"editor.wordWrap": "on"
+	"breadcrumbs.enabled": true
 }
