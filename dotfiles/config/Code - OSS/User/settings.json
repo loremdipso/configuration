@@ -74,5 +74,6 @@
 		"!scss",
 		"!typescriptreact"
 	],
-	"breadcrumbs.enabled": true
+	"breadcrumbs.enabled": false,
+	"workbench.statusBar.visible": true
 }

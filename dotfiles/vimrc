@@ -135,7 +135,8 @@ set foldlevel=0
 
 
 
-colo wombat
+colo wombat256mod
+"colo wombat
 "colo jellybeans
 
 
