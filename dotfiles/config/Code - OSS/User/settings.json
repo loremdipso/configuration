@@ -32,7 +32,8 @@
 		"loremdipso",
 		"postgres",
 		"scrollable",
-		"signup"
+		"signup",
+		"upgrader"
 	],
 	"compile-hero.scss-output-directory": ".",
 	"html.format.indentInnerHtml": true,
