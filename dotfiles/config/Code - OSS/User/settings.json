@@ -19,7 +19,7 @@
 	"explorer.confirmDragAndDrop": false,
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"rust-analyzer.inlayHints.enable": false,
-	"window.zoomLevel": 1,
+	"window.zoomLevel": -1,
 	"editor.insertSpaces": false,
 	"cSpell.userWords": [
 		"Architected",
@@ -57,7 +57,6 @@
 	"[javascript]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
-	"editor.formatOnSave": true,
 	"spellright.language": [
 		"English"
 	],
@@ -76,5 +75,15 @@
 		"!typescriptreact"
 	],
 	"breadcrumbs.enabled": false,
-	"workbench.statusBar.visible": true
+	"workbench.statusBar.visible": true,
+	"[rust]": {
+		"editor.defaultFormatter": "rust-lang.rust"
+	},
+	"[html]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.formatOnSave": true
 }
