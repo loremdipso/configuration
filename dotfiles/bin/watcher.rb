@@ -26,11 +26,22 @@ def main(args)
 	if File.exists?("Cargo.toml")
 		to_watch, to_execute = rust(arg_string)
 	elsif File.exists?("go.mod")
-		to_watch, to_execute = "./src", "go run ."
+		if File.exists?("cmd")
+			to_watch, to_execute = "./cmd", "go run ./cmd/main.go"
+		else
+			to_watch, to_execute = "./src", "go run ."
+		end
 	elsif File.exists?("src/go.mod")
 		to_watch, to_execute = ".", "go run ./src"
 	elsif Dir['*.c'].any?
 		to_watch, to_execute = "*.c", "gcc *.c && ./a.out"
+	elsif File.exists?("package.json")
+		to_watch, to_execute = "*.* ./src", "npm run build"
+	elsif File.exists?("package.json")
+		to_watch, to_execute = "*.* ./src", "npm run build"
+	elsif Dir['*.py'].any?
+		to_watch = "*.py *.txt"
+		to_execute = "./#{Dir['*.py'].first}"
 	else
 		puts "ERROR: dunno what to do"
 		return
@@ -46,9 +57,9 @@ end
 def rust(arguments)
 	# we're a rust project, so watch those files
 	if File.exists?("./src/main.rs")
-		return ["./src ./Cargo.toml", "cargo run -q #{arguments}"]
+		return ["./src ./Cargo.toml", "RUST_LOG=info && cargo run -q -- #{arguments}"]
 	elsif File.exists?("./src/lib.rs")
-		return ["./src ./Cargo.toml", "cargo build #{arguments}"]
+		return ["./src ./Cargo.toml", "cargo build -- #{arguments}"]
 	end
 end
 

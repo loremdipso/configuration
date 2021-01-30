@@ -19,20 +19,26 @@
 	"explorer.confirmDragAndDrop": false,
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"rust-analyzer.inlayHints.enable": false,
-	"window.zoomLevel": -1,
+	"window.zoomLevel": 0,
 	"editor.insertSpaces": false,
 	"cSpell.userWords": [
 		"Architected",
 		"Cookeville",
+		"Middlewares",
+		"Roadmap",
 		"Skunkworks",
 		"Telehealth",
 		"actix",
 		"checklogin",
+		"faceapi",
 		"hahaha",
 		"loremdipso",
 		"postgres",
+		"promisified",
 		"scrollable",
 		"signup",
+		"taggenator",
+		"tauri",
 		"upgrader"
 	],
 	"compile-hero.scss-output-directory": ".",
@@ -65,11 +71,12 @@
 		"latex",
 		"plaintext"
 	],
-	"editor.minimap.enabled": false,
 	"workbench.activityBar.visible": true,
 	"html.autoClosingTags": false,
 	"cSpell.enableFiletypes": [
 		"!css",
+		"!go",
+		"!python",
 		"!rust",
 		"!scss",
 		"!typescriptreact"
@@ -85,5 +92,22 @@
 	"[javascriptreact]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"[json]": {
+		"editor.defaultFormatter": "vscode.json-language-features"
+	},
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"prettier.tabWidth": 4,
+	"vetur.format.options.useTabs": true,
+	"vetur.format.options.tabSize": 4,
+	"python.formatting.autopep8Args": [
+		"--indent-size=4",
+		"--ignore=W191,E101,E111"
+	],
+	"editor.minimap.enabled": false,
+	"telemetry.enableTelemetry": false,
+	"gitlens.advanced.telemetry.enabled": false,
+	"code-runner.enableAppInsights": false,
+	"telemetry.enableCrashReporter": false,
+	"js/ts.implicitProjectConfig.experimentalDecorators": true
 }
