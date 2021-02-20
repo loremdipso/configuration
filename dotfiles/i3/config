@@ -70,8 +70,6 @@ set $10 "10"
 
 
 #assign [class="Terminator"] $1
-#assign [class="Qbittorrent"] $2
-
 #assign [class="Firefox"] $2
 #assign [class="firefox"] $2
 assign [class="JDownloader"] $3
