@@ -72,7 +72,6 @@
 		"plaintext"
 	],
 	"workbench.activityBar.visible": true,
-	"html.autoClosingTags": false,
 	"cSpell.enableFiletypes": [
 		"!css",
 		"!go",
@@ -109,5 +108,6 @@
 	"gitlens.advanced.telemetry.enabled": false,
 	"code-runner.enableAppInsights": false,
 	"telemetry.enableCrashReporter": false,
-	"js/ts.implicitProjectConfig.experimentalDecorators": true
+	"js/ts.implicitProjectConfig.experimentalDecorators": true,
+	"html.autoClosingTags": false
 }

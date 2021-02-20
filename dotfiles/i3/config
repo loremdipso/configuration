@@ -1,5 +1,3 @@
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
-
 #NOTES:
 # control = move workspace
 # Shift   = move window
@@ -13,28 +11,44 @@
 set $mod Mod4
 
 
-exec --no-startup-id volti # volume
+#exec --no-startup-id volti # volume
+exec --no-startup-id volumeicon # volume
 exec --no-startup-id nm-applet
-exec --no-startup-id mate-volume-control-applet
-exec --no-startup-ip parcellite
-exec --no-startup-ip pa-applet
+exec --no-startup-id blueman-applet
+#exec --no-startup-id mate-volume-control-applet
+
+exec --no-startup-id redshift-gtk
+
+exec --no-startup-id parcellite # clipboard manager
+#exec --no-startup-id /opt/piavpn/bin/pia-client
 exec nitrogen --restore
-exec dropboxTray.py
-exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1  # password stuff for software center
+exec --no-startup-id guake
+#exec /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1  # password stuff for software center
 
-exec ~/.screenlayout/normal.sh
+#exec ~/.screenlayout/normal.sh
 
-# doesn't work well, or at all
-#exec ~/.bin/script/floating_script.py
+# TRY to make numlock on
+exec --no-startup-id numlockx on
+exec --no-startup-id dropbox start
 
-#_Floating_Stuff
-for_window [class="I3-exit"] floating enable
-for_window [class="Nitrogen"] floating enable
-
-
-bindsym Control+Shift+Escape exec gnome-system-monitor
+#exec --no-startup-id /home/mikhail/Projects/track_usage/doit.sh
 
 
+#for_window [class="Comix"] focus left
+
+
+# Useful sturff
+#bindsym Control+$mod+J exec /usr/bin/jdownloader; exec /usr/bin/firefox; workspace 2
+#bindsym Control+$mod+J exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/firefox; workspace 3; exec jdownloader'
+#bindsym Control+J exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/firefox; workspace 3; /usr/bin/jdownloader'
+
+
+# GAPS
+#for_window [class=".*"] border pixel 0
+#gaps outer all set 50
+#gaps inner all set 20
+#smart_gaps on
+#smart_gaps inverse_outer
 
 
 #_Workspace_Names
@@ -56,13 +70,21 @@ set $10 "10"
 
 
 #assign [class="Terminator"] $1
+#assign [class="Qbittorrent"] $2
 
 #assign [class="Firefox"] $2
-#assign [class="Qbittorrent"] $2
-#assign [class="JDownloader"] $2
+#assign [class="firefox"] $2
+assign [class="JDownloader"] $3
+
+assign [class="Gtaggenator"] $10
 
 
 for_window [class="I3-exit"] floating enable
+for_window [class="Xfce4-notifyd"] floating enable
+for_window [class="Tk"] floating enable   # not sure on this one
+for_window [instance="file_progress"] floating enable   # not sure on this one
+for_window [class="Tagger"] floating enable   # not sure on this one
+for_window [title="Android Emulator - .*"] floating enable
 
 
 # kill on middle-mouse click
@@ -74,34 +96,35 @@ for_window [class="I3-exit"] floating enable
 #bindsym button3 floating toggle
 
 
-bindsym $mod+Insert exec nautilus
+bindsym $mod+Insert exec nemo
+bindsym $mod+Shift+Return exec nemo
 
 
 bindsym $mod+Control+Right move workspace to output right
 bindsym $mod+Control+Left move workspace to output left
 
-#bindsym $mod+l exec export XDG_SEAT_PATH="..." dm-tool lock
-#bindsym $mod+l exec gnome-screensaver-command -l
-bindsym $mod+l exec i3lock -d -I 5
+bindsym $mod+l exec gnome-screensaver-command -l
 #bindsym $mod+l exec gdmflexiserver
-#bindsym $mod+Shift+l exec ~/.lock_and_suspend.sh
-bindsym $mod+Shift+l exec i3lock -d -I 5 && systemctl suspend
+bindsym $mod+Shift+l exec ~/.lock_and_suspend.sh
 
 
 #_Scratchpad
-bindsym $mod+minus move scratchpad
-bindsym $mod+equal scratchpad show
-#bindsym $mod+KP_Subtract move scratchpad
-#bindsym $mod+KP_Add scratchpad show
+bindsym $mod+KP_Subtract move scratchpad
+bindsym $mod+KP_Add scratchpad show
 
 
 
 #_Volume
 #bindsym Shift+KP_8 exec amixer -q set Master 5dB+
 #bindsym Shift+KP_2 exec amixer -q set Master 5dB-
-bindsym Shift+Up exec pactl set-sink-volume 1 +5%
-bindsym Shift+Down exec pactl set-sink-volume 1 -5%
-bindsym $mod+m exec exec pactl set-sink-mute 1 toggle
+bindsym Shift+Up exec pactl set-sink-volume @DEFAULT_SINK@ +20%
+#bindsym Shift+Down exec pactl set-sink-volume @DEFAULT_SINK@ -- -20%
+bindsym Shift+Down exec pactl set-sink-volume @DEFAULT_SINK@ -20%
+bindsym Shift+KP_8 exec pactl set-sink-volume @DEFAULT_SINK@ +20%
+bindsym Shift+KP_2 exec pactl set-sink-volume @DEFAULT_SINK@ -20%
+bindsym $mod+m exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+#bindsym $mod+m exec amixer -q set Master toggle
+#bindsym Shift+KP_0 exec amixer -q set Master toggle
 
 
 
@@ -117,26 +140,33 @@ bindsym $mod+Shift+p exec ~/.i3/workspace_utils.py move_window beginning
 bindsym $mod+Control+p exec ~/.i3/workspace_utils.py move_workspace beginning
 
 bindsym $mod+n exec ~/.i3/workspace_utils.py move_me end
+#bindsym $mod+n workspace next
 bindsym $mod+Shift+n exec ~/.i3/workspace_utils.py move_window end
 bindsym $mod+Control+n exec ~/.i3/workspace_utils.py move_workspace end
 
 # move to next/previous spot on current monitor
-bindsym $mod+Page_Up exec ~/.i3/workspace_utils.py move_me previous_on_monitor
-bindsym $mod+Page_Down exec ~/.i3/workspace_utils.py move_me next_on_monitor
+#bindsym $mod+Page_Up exec ~/.i3/workspace_utils.py move_me previous_on_monitor
+#bindsym $mod+Page_Down exec ~/.i3/workspace_utils.py move_me next_on_monitor
+bindsym $mod+Page_Down workspace prev_on_output
+bindsym $mod+j workspace prev_on_output
+bindsym $mod+Page_Up workspace next_on_output
+bindsym $mod+k workspace next_on_output
 
 # move workspace to next/previous spot on current monitor
 bindsym $mod+Control+Page_Up exec ~/.i3/workspace_utils.py move_workspace previous_on_monitor
+bindsym $mod+Control+j exec ~/.i3/workspace_utils.py move_workspace previous_on_monitor
 bindsym $mod+Control+Page_Down exec ~/.i3/workspace_utils.py move_workspace next_on_monitor
+bindsym $mod+Control+k exec ~/.i3/workspace_utils.py move_workspace next_on_monitor
 
 # move window to next/previous spot on current monitor and follow
 bindsym $mod+Shift+Page_Up exec ~/.i3/workspace_utils.py move_window previous_on_monitor
 bindsym $mod+Shift+Page_Down exec ~/.i3/workspace_utils.py move_window next_on_monitor
 
 
-# mod-shift-s move window/workspace to next monitor (switch)
+# mod-shift-s move window to next monitor (switch)
 bindsym $mod+Shift+s exec ~/.i3/workspace_utils.py move_window_to_next_monitor
-# not really, but works well enough for two monitors
-bindsym $mod+Control+s move workspace to output left
+
+bindsym $mod+Control+s move workspace to output right
 
 
 
@@ -154,22 +184,22 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec /usr/bin/alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
 bindsym Mod1+w kill
 
 # start dmenu (a program launcher)
+bindsym mod4+space exec dmenu_run
+bindsym ctrl+shift+space exec dmenu_run
 #bindsym ctrl+space exec dmenu_run
+#bindsym ctrl+space exec dmenu_run
+#bindsym ctrl+space exec i3-dmenu-desktop
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym ctrl+space exec --no-startup-id i3-dmenu-desktop
-
-# TODO: raise running program
-#bindsym Mod1+space exec --no-startup-id ~/.i3/dmenu_raise.sh
-bindsym Mod1+Tab exec --no-startup-id ~/.i3/dmenu_raise.sh
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 #bindsym $mod+j focus left
@@ -210,11 +240,11 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-#bindsym $mod+Shift+space floating toggle
-bindsym $mod+Shift+space exec ~/.i3/workspace_utils.py float_with_storage
+bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+# TODO: put back at some point
+#bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -300,5 +330,8 @@ bar {
 		#status_command source py3.4env/bin/activate -p /usr/bin/python3.4 python3 ~/.i3/i3status_conf.py
 		#status_command    ~/.i3/i3status_conf_wrapper.sh
 		workspace_buttons yes
+		#tray_output HDMI-0
+		#tray_output primary
+
 		#position          top
 }

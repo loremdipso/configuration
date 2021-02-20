@@ -162,7 +162,18 @@ class Manager
     end
 
     def safe_move_file(source, target)
-        if File.exists?(target)
+		if not File.exists?(source)
+			puts "#{source} doesn't exist. Removing local."
+			if @flags[:skip]
+				puts "Not really"
+			else
+				File.delete(target)
+			end
+
+			return
+		end
+
+		if File.exists?(target)
             if File.read(source) == File.read(target)
                 puts "Same. Skipping #{target}" if @flags[:verbose]
                 return
