@@ -13,32 +13,41 @@
 	"explorer.confirmDelete": false,
 	"competitive-programming-helper.firstTime": false,
 	"competitive-programming-helper.saveLocation": "/home/madams/Projects/Topcoder/.garbage",
+	"editor.acceptSuggestionOnCommitCharacter": false,
 	"editor.detectIndentation": false,
 	"go.useLanguageServer": true,
 	"editor.autoClosingBrackets": "never",
 	"explorer.confirmDragAndDrop": false,
 	"typescript.updateImportsOnFileMove.enabled": "always",
 	"rust-analyzer.inlayHints.enable": false,
-	"window.zoomLevel": 0,
 	"editor.insertSpaces": false,
 	"cSpell.userWords": [
-		"Architected",
-		"Cookeville",
-		"Middlewares",
-		"Roadmap",
-		"Skunkworks",
-		"Telehealth",
 		"actix",
+		"Architected",
 		"checklogin",
+		"Cookeville",
+		"devlog",
+		"devs",
 		"faceapi",
+		"greenfielding",
 		"hahaha",
+		"halfnelson",
+		"hoster",
+		"hyperfixation",
 		"loremdipso",
+		"Middlewares",
+		"octocrab",
 		"postgres",
 		"promisified",
+		"résumé",
+		"Roadmap",
 		"scrollable",
 		"signup",
+		"Skunkworks",
+		"struct",
 		"taggenator",
 		"tauri",
+		"Telehealth",
 		"upgrader"
 	],
 	"compile-hero.scss-output-directory": ".",
@@ -63,14 +72,8 @@
 	"[javascript]": {
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
-	"spellright.language": [
-		"English"
-	],
-	"spellright.documentTypes": [
-		"markdown",
-		"latex",
-		"plaintext"
-	],
+	"spellright.language": ["English"],
+	"spellright.documentTypes": ["markdown", "latex", "plaintext"],
 	"workbench.activityBar.visible": true,
 	"cSpell.enableFiletypes": [
 		"!css",
@@ -109,5 +112,9 @@
 	"code-runner.enableAppInsights": false,
 	"telemetry.enableCrashReporter": false,
 	"js/ts.implicitProjectConfig.experimentalDecorators": true,
-	"html.autoClosingTags": false
+	"html.autoClosingTags": false,
+	"angular.experimental-ivy": true,
+	"redhat.telemetry.enabled": false,
+	"svelte.enable-ts-plugin": true,
+	"window.menuBarVisibility": "toggle"
 }

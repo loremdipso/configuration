@@ -102,19 +102,19 @@ filetype off
 
 " what a terrible name
 call plug#begin('~/.vim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'georgewitteman/vim-fish'
 Plug 'kblin/vim-fountain'
 call plug#end()
 
-let g:coc_global_extensions = ['coc-solargraph'] " for ruby
+" let g:coc_global_extensions = ['coc-solargraph'] " for ruby
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+"inoremap <silent><expr> <TAB>
+      "\ pumvisible() ? "\<C-n>" :
+      "\ <SID>check_back_space() ? "\<TAB>" :
+      "\ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -345,8 +345,8 @@ map <F2> <Esc>:bn<CR>| imap <F2> <Esc>:bn<CR>
 
 
 " Toggles the number keys default output
-nnoremap <C-b> :call Numbas()<CR>
-inoremap <C-b> <Esc>:call Numbas()<CR>a
+" nnoremap <C-b> :call Numbas()<CR>
+" inoremap <C-b> <Esc>:call Numbas()<CR>a
 
 
 " pgdn moves down half a screen

@@ -17,7 +17,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 #exec --no-startup-id mate-volume-control-applet
 
-exec --no-startup-id redshift-gtk
+#exec --no-startup-id redshift-gtk
 
 exec --no-startup-id parcellite # clipboard manager
 #exec --no-startup-id /opt/piavpn/bin/pia-client
@@ -29,7 +29,7 @@ exec --no-startup-id guake
 
 # TRY to make numlock on
 exec --no-startup-id numlockx on
-exec --no-startup-id dropbox start
+#exec --no-startup-id dropbox start
 
 #exec --no-startup-id /home/mikhail/Projects/track_usage/doit.sh
 
@@ -72,9 +72,9 @@ set $10 "10"
 #assign [class="Terminator"] $1
 #assign [class="Firefox"] $2
 #assign [class="firefox"] $2
-assign [class="JDownloader"] $3
+#assign [class="JDownloader"] $3
 
-assign [class="Gtaggenator"] $10
+#assign [class="Gtaggenator"] $10
 
 
 for_window [class="I3-exit"] floating enable
@@ -83,6 +83,8 @@ for_window [class="Tk"] floating enable   # not sure on this one
 for_window [instance="file_progress"] floating enable   # not sure on this one
 for_window [class="Tagger"] floating enable   # not sure on this one
 for_window [title="Android Emulator - .*"] floating enable
+
+assign [class="rtaggenator"] 4
 
 
 # kill on middle-mouse click
@@ -94,6 +96,7 @@ for_window [title="Android Emulator - .*"] floating enable
 #bindsym button3 floating toggle
 
 
+
 bindsym $mod+Insert exec nemo
 bindsym $mod+Shift+Return exec nemo
 
@@ -101,7 +104,8 @@ bindsym $mod+Shift+Return exec nemo
 bindsym $mod+Control+Right move workspace to output right
 bindsym $mod+Control+Left move workspace to output left
 
-bindsym $mod+l exec gnome-screensaver-command -l
+bindsym $mod+l exec i3lock -c 000000
+#bindsym $mod+l exec gnome-screensaver-command -l
 #bindsym $mod+l exec gdmflexiserver
 bindsym $mod+Shift+l exec ~/.lock_and_suspend.sh
 
@@ -133,36 +137,42 @@ bindsym $mod+Shift+t exec ~/.i3/get_workspace_options.py | dmenu -b | ~/.i3/move
 #bindsym $mod+Control+t exec ~/.i3/get_workspace_options.py | dmenu -b | ~/.i3/rename_workspace.py # not yet made
 
 # next/previous workspace stuff
-bindsym $mod+p exec ~/.i3/workspace_utils.py move_me beginning
-bindsym $mod+Shift+p exec ~/.i3/workspace_utils.py move_window beginning
-bindsym $mod+Control+p exec ~/.i3/workspace_utils.py move_workspace beginning
+bindsym $mod+p exec ~/.bin/i3_tools --start
+bindsym $mod+Shift+p exec ~/.bin/i3_tools --window --start --collapse
+bindsym $mod+Control+p exec ~/.bin/i3_tools --workspace --start --collapse
 
-bindsym $mod+n exec ~/.i3/workspace_utils.py move_me end
+bindsym $mod+n exec ~/.bin/i3_tools --end
 #bindsym $mod+n workspace next
-bindsym $mod+Shift+n exec ~/.i3/workspace_utils.py move_window end
-bindsym $mod+Control+n exec ~/.i3/workspace_utils.py move_workspace end
+bindsym $mod+Shift+n exec ~/.bin/i3_tools --window --end --collapse
+bindsym $mod+Control+n exec ~/.bin/i3_tools --workspace --end --collapse
 
 # move to next/previous spot on current monitor
-#bindsym $mod+Page_Up exec ~/.i3/workspace_utils.py move_me previous_on_monitor
-#bindsym $mod+Page_Down exec ~/.i3/workspace_utils.py move_me next_on_monitor
-bindsym $mod+Page_Down workspace prev_on_output
-bindsym $mod+j workspace prev_on_output
-bindsym $mod+Page_Up workspace next_on_output
-bindsym $mod+k workspace next_on_output
+#bindsym $mod+Page_Up exec ~/.bin/i3_tools move_me previous_on_monitor
+#bindsym $mod+Page_Down exec ~/.bin/i3_tools move_me next_on_monitor
+#bindsym $mod+Page_Down workspace prev_on_output
+#bindsym $mod+j workspace prev_on_output
+#bindsym $mod+Page_Up workspace next_on_output
+#bindsym $mod+k workspace next_on_output
+
+bindsym $mod+Page_Up exec ~/.bin/i3_tools --previous
+bindsym $mod+Page_Down exec ~/.bin/i3_tools --next
+
+bindsym $mod+Control+Page_Up exec ~/.bin/i3_tools --workspace --previous --collapse
+bindsym $mod+Control+Page_Down exec ~/.bin/i3_tools --workspace --next --collapse
 
 # move workspace to next/previous spot on current monitor
-bindsym $mod+Control+Page_Up exec ~/.i3/workspace_utils.py move_workspace previous_on_monitor
-bindsym $mod+Control+j exec ~/.i3/workspace_utils.py move_workspace previous_on_monitor
-bindsym $mod+Control+Page_Down exec ~/.i3/workspace_utils.py move_workspace next_on_monitor
-bindsym $mod+Control+k exec ~/.i3/workspace_utils.py move_workspace next_on_monitor
+#bindsym $mod+Control+Page_Up exec ~/.bin/i3_tools --workspace previous_on_monitor
+#bindsym $mod+Control+j exec ~/.bin/i3_tools --workspace previous_on_monitor
+#bindsym $mod+Control+Page_Down exec ~/.bin/i3_tools --workspace next_on_monitor
+#bindsym $mod+Control+k exec ~/.bin/i3_tools --workspace next_on_monitor
 
 # move window to next/previous spot on current monitor and follow
-bindsym $mod+Shift+Page_Up exec ~/.i3/workspace_utils.py move_window previous_on_monitor
-bindsym $mod+Shift+Page_Down exec ~/.i3/workspace_utils.py move_window next_on_monitor
+bindsym $mod+Shift+Page_Up exec ~/.bin/i3_tools --window --previous --collapse
+bindsym $mod+Shift+Page_Down exec ~/.bin/i3_tools --window --next --collapse
 
 
 # mod-shift-s move window to next monitor (switch)
-bindsym $mod+Shift+s exec ~/.i3/workspace_utils.py move_window_to_next_monitor
+bindsym $mod+Shift+s exec ~/.bin/i3_tools --monitor --window --collapse
 
 bindsym $mod+Control+s move workspace to output right
 
@@ -190,7 +200,9 @@ bindsym Mod1+w kill
 
 # start dmenu (a program launcher)
 bindsym mod4+space exec dmenu_run
+bindsym ctrl+space exec dmenu_run
 bindsym ctrl+shift+space exec dmenu_run
+#bindsym ctrl+shift+space exec dmenu_run
 #bindsym ctrl+space exec dmenu_run
 #bindsym ctrl+space exec dmenu_run
 #bindsym ctrl+space exec i3-dmenu-desktop
@@ -286,7 +298,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "~/.i3/I3-exit"
+#bindsym $mod+Shift+e exec "~/.i3/I3-exit"
 #bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 
