@@ -11,6 +11,8 @@ set -Ua fish_user_paths ~/.local/bin $HOME/.bin $HOME/.cargo/bin $HOME/.gem/ruby
 # Try to use the same cache for rust projects
 set -x CARGO_TARGET_DIR $HOME/.cargo-target
 
+set -x LS_COLORS 'di=1;95:'
+
 if test -f /home/madams/.autojump/share/autojump/autojump.fish
 	. /home/madams/.autojump/share/autojump/autojump.fish
 end
